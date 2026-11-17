@@ -1,0 +1,24 @@
+# This blueprint creates PAID compute + a persistent disk. Review pricing before applying.
+services:
+  - type: web
+    name: qidu-private-library
+    runtime: docker
+    plan: starter
+    region: singapore
+    dockerfilePath: ./Dockerfile
+    healthCheckPath: /api/health
+    autoDeployTrigger: off
+    disk:
+      name: qidu-private-data
+      mountPath: /var/data/qidu
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: "10000"
+      - key: QIDU_DATA_DIR
+        value: /var/data/qidu/library
+      - key: QIDU_ACCESS_PASSWORD
+        sync: false
+# Render supplies RENDER_EXTERNAL_URL. Custom domain: set APP_ORIGIN=https://your-domain.
